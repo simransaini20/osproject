@@ -92,4 +92,55 @@ Arrival time <= Execution time
       }
     }
     k++;
+    }
+  waitingTime[0] = 0;
+  for(i=1;i<n;i++)
+  {
+    sum += burstTime[i-1];
+    waitingTime[i] = sum - arrivalTime[i];
+    wait_final += waitingTime[i]; 
+  }
+  wait_avg = wait_final/n;
+  for(i=0;i<n;i++)
+  {
+    sum2 += burstTime[i];
+    turnaroundTime[i] = sum2 - arrivalTime[i];
+    turnaround_final += turnaroundTime[i];
+  }
+  turnaround_avg=turnaround_final/n;
+
+  /*Now we have to prioritize the processes according to the formulae
+      Priority = 1+ Waiting time / Estimated run time
+  */
+ 
+  
+  completionTime[0] = burstTime[0];
+  for(i=1;i<n;i++)
+  {
+    completionTime[i] = completionTime[i-1] + burstTime[i];
+  }
+
+  for(i=0;i<n;i++)
+  {
+    priority[i] = 1+waitingTime[i]/completionTime[i];
+    printf("%lf\n",priority[i]);
+  }
+  	system("cls");
+	printf("\n\n\t\t\t*******wait for 5 sec priority is in process*********\n\n");
+	sleep(7);
+  printf("\n\n ***************** Final Values after pritorizing are *****************\n\n");
+  printf("-----------------------------------------------------------------------------\n");
+  printf("| Process | Arrival Time | Burst Time |  Waiting Time  |  Turn Around Time  |\n");
+  printf("-----------------------------------------------------------------------------\n");
+  printf("|  P[%0.0lf]   |       %0.0lf      |     %0.0lf      |        %0.0lf       |         %0.0lf          |\n",process[0],arrivalTime[0],burstTime[0],waitingTime[0],turnaroundTime[0]);
+  for(i=n-1;i>0;i--)
+  {
+    printf("|  P[%0.0lf]   |       %0.0lf     |     %0.0lf      |        %0.0lf       |         %0.0lf          |\n",process[i],arrivalTime[i],burstTime[i],waitingTime[i],turnaroundTime[i]);
+  }
+    printf("-----------------------------------------------------------------------------\n");
+
+  printf("\n\n\n\t\t\tAverage Turn Around Time : %lf",turnaround_avg);
+  printf("\n\n\n\t\t\tAverage Waiting Time     : %lf\n\n",wait_avg);
+  return 0;
+}
   
